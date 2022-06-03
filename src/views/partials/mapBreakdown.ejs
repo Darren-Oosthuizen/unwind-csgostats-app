@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Map Win %</h6>
+            </div>
+            <div class="card-body">
+
+                <% for(var i = 0; i < maps.length; i++){ %>
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 style="display: inline-block; height: 45px; line-height: 45px" class="small font-weight-bold">
+                                <img height="65%" src="https://static.csgostats.gg/images/maps/icons/<%= maps[i].name %>.png">
+                                <%= maps[i].name %>
+                            </h4></div>
+                        <div class="col-6"><span style="line-height: 45px; vertical-align: middle" class="float-right small font-weight-bold"><%= Math.round(((maps[i].wins / maps[i].totalGames) + Number.EPSILON) * 100) %>% (<%= maps[i].wins %> / <%= maps[i].totalGames %>)</span></div>
+                    </div>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: <%= Math.round(((maps[i].wins / maps[i].totalGames) + Number.EPSILON) * 100) %>%"
+                             aria-valuenow="<%= Math.round(((maps[i].wins / maps[i].totalGames) + Number.EPSILON) * 100) %>"
+                             aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Map Distribution</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-pie pt-4">
+                    <div class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                        </div>
+                    </div>
+                    <canvas id="mapDistributionDonut" width="746" height="316"
+                            style="display: block; height: 253px; width: 597px;"
+                            class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

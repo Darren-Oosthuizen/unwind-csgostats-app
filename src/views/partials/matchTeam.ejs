@@ -1,0 +1,95 @@
+<div class="row mt-4">
+    <div class="col-xl-12 col-md-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold <%= text %>"><%= team.name + ": " + team.score %></h6>
+            </div>
+            <div class="card-body pt-0">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="team<%=team.id%>table" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th style="border-top: none" colspan="9"></th>
+                            <th style="border-top: none" class="multikill text-center" colspan="1">
+                                <a class="btn multikillToggle"><small style="white-space: nowrap">Multi Kills</small></a>
+                                <div style="border-top:2px solid rgba(0,0,0, 0.3);height:8px; border-left:2px solid rgba(0,0,0, 0.3); border-right:2px solid rgba(0,0,0, 0.3);"></div>
+                            </th>
+                            <th style="border-top: none" class="multikill text-center" colspan="5">
+                                <a class="btn multikillToggle"><small style="white-space: nowrap">Multi Kills</small></a>
+                                <div style="border-top:2px solid rgba(0,0,0, 0.3);height:8px; border-left:2px solid rgba(0,0,0, 0.3); border-right:2px solid rgba(0,0,0, 0.3);"></div>
+                            </th>
+                            <th style="border-top: none" class="clutch text-center" colspan="1">
+                                <a class="btn clutchToggle"><small style="white-space: nowrap">Clutch Stats</small></a>
+                                <div style="border-top:2px solid rgba(0,0,0, 0.3);height:8px; border-left:2px solid rgba(0,0,0, 0.3); border-right:2px solid rgba(0,0,0, 0.3);"></div>
+                            </th>
+                            <th style="border-top: none" class="clutch text-center" colspan="5">
+                                <a class="btn clutchToggle"><small style="white-space: nowrap">Clutch Stats</small></a>
+                                <div style="border-top:2px solid rgba(0,0,0, 0.3);height:8px; border-left:2px solid rgba(0,0,0, 0.3); border-right:2px solid rgba(0,0,0, 0.3);"></div>
+                            </th>
+                            <th style="border-top: none" colspan=3"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center" style="width: 15%">Name</th>
+                            <th class="text-center" style="width: 5%">K</th>
+                            <th class="text-center" style="width: 5%">D</th>
+                            <th class="text-center" style="width: 5%">A</th>
+                            <th class="text-center" style="width: 5%">K/D</th>
+                            <th class="text-center" style="width: 5%">ADR <i class="fas fa-question-circle text-gray-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Average Damage per Round"></i></th>
+                            <th class="text-center" style="width: 5%">HS %</th>
+                            <th class="text-center" style="width: 5%">FK <i class="fas fa-question-circle text-gray-300" data-bs-toggle="tooltip" data-bs-placement="top" title="First Kill"></i></th>
+                            <th class="text-center" style="width: 5%">FD <i class="fas fa-question-circle text-gray-300" data-bs-toggle="tooltip" data-bs-placement="top" title="First Death"></i></th>
+                            <th style="width: 5%" class="text-center">3K+</th>
+                            <th style="width: 5%" class="text-center">5K</th>
+                            <th style="width: 5%" class="text-center">4K</th>
+                            <th style="width: 5%" class="text-center">3K</th>
+                            <th style="width: 5%" class="text-center">2K</th>
+                            <th style="width: 5%" class="text-center">1K</th>
+                            <th style="width: 5%" class="text-center">1vX</th>
+                            <th style="width: 5%" class="text-center">1v5</th>
+                            <th style="width: 5%" class="text-center">1v4</th>
+                            <th style="width: 5%" class="text-center">1v3</th>
+                            <th style="width: 5%" class="text-center">1v2</th>
+                            <th style="width: 5%" class="text-center">1v1</th>
+                            <th class="text-center" style="width: 5%">EF <i class="fas fa-question-circle text-gray-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Enemies Flashed"></i></th>
+                            <th class="text-center" style="width: 5%">UD <i class="fas fa-question-circle text-gray-300" data-bs-toggle="tooltip" data-bs-placement="top" title="Utility Damage"></i></th>
+                            <th class="text-center" style="width: 5%">MVP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% for(var i = 0; i < team.players.length; i++){ %>
+                            <tr>
+                                <td class="fw-bold"><%= team.players[i].name %></td>
+                                <td class="text-center"><%= team.players[i].kills %></td>
+                                <td class="text-center"><%= team.players[i].deaths %></td>
+                                <td class="text-center"><%= team.players[i].assists %></td>
+                                <td class="text-center"><%= Math.round(((team.players[i].kills / team.players[i].deaths) + Number.EPSILON) * 100) / 100 %></td>
+                                <td class="text-center"><%= Math.round((team.players[i].damageDone / match.rounds.length)) %></td>
+                                <td class="text-center"><%= Math.round(((team.players[i].headshots / team.players[i].kills) + Number.EPSILON) * 100) %>
+                                    %
+                                </td>
+                                <td class="text-center"><%= team.players[i].firstKill %></td>
+                                <td class="text-center"><%= team.players[i].firstDeath %></td>
+                                <td class="text-center"><%= team.players[i].fiveKillRounds + team.players[i].fourKillRounds + team.players[i].threeKillRounds %></td>
+                                <td class="text-center"><%= team.players[i].fiveKillRounds%></td>
+                                <td class="text-center"><%= team.players[i].fourKillRounds%></td>
+                                <td class="text-center"><%= team.players[i].threeKillRounds%></td>
+                                <td class="text-center"><%= team.players[i].twoKillRounds%></td>
+                                <td class="text-center"><%= team.players[i].oneKillRounds%></td>
+                                <td class="text-center"><%= team.players[i].oneVersusFiveClutched + team.players[i].oneVersusFourClutched + team.players[i].oneVersusThreeClutched + team.players[i].oneVersusTwoClutched + team.players[i].oneVersusOneClutched %></td>
+                                <td class="text-center"><%= team.players[i].oneVersusFiveClutched%></td>
+                                <td class="text-center"><%= team.players[i].oneVersusFourClutched%></td>
+                                <td class="text-center"><%= team.players[i].oneVersusThreeClutched%></td>
+                                <td class="text-center"><%= team.players[i].oneVersusTwoClutched%></td>
+                                <td class="text-center"><%= team.players[i].oneVersusOneClutched%></td>
+                                <td class="text-center"><%= team.players[i].enemiesFlashed %></td>
+                                <td class="text-center"><%= team.players[i].utilityDamage %></td>
+                                <td class="text-center"><%= team.players[i].mvp %></td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

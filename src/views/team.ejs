@@ -1,0 +1,136 @@
+<%- include('partials/header.ejs') %>
+<%- include('partials/navbar.ejs') %>
+
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+        <div class="container-fluid">
+
+            <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                <h1 class="h3 mb-0 text-gray-800 fw-bold">Team Statistics: <b><%= team.teamName %></b></h1>
+            </div>
+
+            <ul class="nav nav-tabs" id="teamNavTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="players-tab" data-bs-toggle="tab" data-bs-target="#players"
+                            type="button" role="tab" aria-controls="players" aria-selected="true">Players
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history"
+                            type="button" role="tab" aria-controls="history" aria-selected="false">Match History
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="maps-tab" data-bs-toggle="tab" data-bs-target="#maps" type="button"
+                            role="tab" aria-controls="rounds" aria-selected="false">Maps
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-2" id="teamNavTabContent">
+                <div class="tab-pane fade show active" id="players" role="tabpanel" aria-labelledby="players-tab">
+                    <div class="row mt-2">
+                        <div class="col-xl-12 col-md-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary"><%= team.teamName %> Players</h6>
+                                </div>
+                                <div class="card-body">
+                                    <%- include('partials/playerTable.ejs', {players: team.players}) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                    <div class="row mt-2">
+                        <div class="col-xl-6 col-md-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary"><%= team.teamName %> Match
+                                        History</h6>
+                                </div>
+                                <div class="card-body">
+                                    <%- include('partials/matchHistory.ejs', {matchHistory: team.matchHistory}) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="maps" role="tabpanel" aria-labelledby="maps-tab">
+                    <div class="row mt-2">
+                        <div class="col-xl-12 col-md-12">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                                <h1 class="h3 mb-0 text-gray-800 fw-bold">Map Statistics: <b><%= team.teamName %></b>
+                                </h1>
+                            </div>
+                            <%- include('partials/mapBreakdown.ejs', { maps : team.maps }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<%- include('partials/footer.ejs') %>
+<script>
+    $(document).ready(function () {
+        $('#playersDataTable').DataTable({
+            "order": [[1, "desc"]]
+        });
+    });
+    const mapLabels = [];
+    const mapDataWins = [];
+    <% for(var i = 0; i < team.maps.length; i++){ %>
+    mapLabels.push("<%= team.maps[i].name %>");
+    mapDataWins.push("<%= team.maps[i].totalGames %>")
+    <% } %>
+
+    const mapData = {
+        labels: mapLabels,
+        datasets: [
+            {
+                label: "Map Distribution Chart",
+                data: mapDataWins,
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }
+        ]
+    };
+
+    //options
+    Chart.defaults.font.family = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.color = '#858796';
+
+    const mapOptions = {
+        maintainAspectRatio: false,
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+        },
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 80,
+    };
+
+    //create Chart class object
+    const mapDistributionDonut = new Chart(document.getElementById('mapDistributionDonut'), {
+        type: "doughnut",
+        data: mapData,
+        options: mapOptions
+    });
+
+</script>

@@ -1,0 +1,30 @@
+<%- include('partials/header.ejs') %>
+<%- include('partials/navbar.ejs', {playersActive: true}) %>
+
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-12 col-md-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">CSGO Players</h6>
+                        </div>
+                        <div class="card-body">
+                            <%- include('partials/playerTable.ejs', {players: players}) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
+<script>
+    $(document).ready(function () {
+        $('#playersDataTable').DataTable({
+            "order": [[1, "desc"]]
+        });
+    });
+</script>

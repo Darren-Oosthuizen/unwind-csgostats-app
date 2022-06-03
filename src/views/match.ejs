@@ -1,0 +1,418 @@
+<%- include('partials/header.ejs') %>
+<%- include('partials/navbar.ejs') %>
+
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+        <div class="container-fluid">
+
+            <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                <h1 class="h3 mb-0 text-gray-800 fw-bold">Map: <b><%= match.map %></b></h1>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-tabs" id="matchNavTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="scoreboard-tab" data-bs-toggle="tab" data-bs-target="#scoreboard" type="button" role="tab" aria-controls="home" aria-selected="true">Scoreboard</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="round-tab" data-bs-toggle="tab" data-bs-target="#rounds" type="button" role="tab" aria-controls="rounds" aria-selected="false">Rounds</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="duel-tab" data-bs-toggle="tab" data-bs-target="#duels" type="button" role="tab" aria-controls="duels" aria-selected="false">Duels</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="guns-tab" data-bs-toggle="tab" data-bs-target="#guns" type="button" role="tab" aria-controls="guns" aria-selected="false">Guns</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-2" id="matchNavTabContent">
+                        <div class="tab-pane fade show active" id="scoreboard" role="tabpanel" aria-labelledby="scoreboard-tab">
+                            <!--      CT      -->
+                            <%- include('partials/matchTeam.ejs', {team: match.teams[0], text: 'text-warning'}) %>
+
+
+                            <%- include('partials/roundBreakdownLine.ejs') %>
+
+                            <!--      T       -->
+                            <%- include('partials/matchTeam.ejs', {team: match.teams[1], text: 'text-primary'}) %>
+                        </div>
+                        <div class="tab-pane fade" id="rounds" role="tabpanel" aria-labelledby="rounds-tab">
+                            <div class="card-body">
+                                <% for(var i = 0; i < match.rounds.length; i++){ %>
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="card shadow mb-4">
+                                                <!-- Card Header - Accordion -->
+                                                <a href="#round<%= match.rounds[i].roundNumber %>Collapse"
+                                                   data-bs-toggle="collapse"
+                                                   class="d-block card-header py-3 collapsed"
+                                                   role="button" aria-expanded="false"
+                                                   data-bs-target="#round<%= match.rounds[i].roundNumber %>Collapse">
+                                                    <h6 class="m-0 font-weight-bold text-primary">
+                                                        Round <%= match.rounds[i].roundNumber %></h6>
+                                                    <% if (match.rounds[i].clutch !== null) { %>
+                                                        <span class=""><%= match.rounds[i].clutch %></span>
+                                                    <% } %>
+                                                </a>
+                                                <!-- Card Content - Collapse -->
+                                                <div class="collapse" id="round<%= match.rounds[i].roundNumber %>Collapse">
+                                                    <div class="card-body" style="background-color: #2d2e33">
+                                                        <% for(var j = 0; j < match.rounds[i].kills.length; j++){ %>
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <span class="mr-1">(<%= Math.floor(match.rounds[i].kills[j].time / 60) + ":" + (match.rounds[i].kills[j].time % 60 ? (match.rounds[i].kills[j].time % 60).toString().padStart(2, '0') : '00') %>)</span>
+                                                                    <% if (match.rounds[i].kills[j].attackerBlind) { %>
+                                                                        <i class="fas fa-eye-slash text-gray-300"></i>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].killerTeamName === 'TERRORIST') { %>
+                                                                        <span class="mr-1 text-warning"><%= match.rounds[i].kills[j].killerName %></span>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].killerTeamName === 'CT') { %>
+                                                                        <span class="mr-1 text-primary"><%= match.rounds[i].kills[j].killerName %></span>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].assisted) { %>
+                                                                        <span class="mr-1">+</span>
+                                                                        <% if (match.rounds[i].kills[j].flashAssist) { %>
+                                                                            <img height="16px" width="16px"
+                                                                                 src="https://www.vhv.rs/dpng/d/52-529068_csgo-flashbang-icon-hd-png-download.png">
+                                                                        <% } %>
+                                                                        <% if (match.rounds[i].kills[j].assisterTeamName === 'TERRORIST') { %>
+                                                                            <span class="text-warning"><%= match.rounds[i].kills[j].assisterName %></span>
+                                                                        <% } %>
+                                                                        <% if (match.rounds[i].kills[j].assisterTeamName === 'CT') { %>
+                                                                            <span class="text-primary"><%= match.rounds[i].kills[j].assisterName %></span>
+                                                                        <% } %>
+                                                                    <% } %>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <% if (match.rounds[i].kills[j].noscope) { %>
+                                                                        <img height="16px" width="16px"
+                                                                             src="https://pbs.twimg.com/media/EWX31DsWkAAcRcN.png">
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].throughSmoke) { %>
+                                                                        <i class="fas fa-cloud text-gray-300"></i>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].gun === 'planted_c4') { %>
+                                                                        <span>(Bomb Explosion)</span>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].gun !== 'planted_c4') { %>
+                                                                        <span>(<%= match.rounds[i].kills[j].gun %>)</span>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].penetrated) { %>
+                                                                        <img height="16px" width="16px"
+                                                                             src="https://static.csgostats.gg/images/wallbang.png">
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].headshot) { %>
+                                                                        <img height="16px" width="16px"
+                                                                             src="https://static.csgostats.gg/images/hs-small.png">
+                                                                    <% } %>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <% if (match.rounds[i].kills[j].killedTeamName === 'TERRORIST') { %>
+                                                                        <span class="mr-4 text-warning"><%= match.rounds[i].kills[j].killedName %></span>
+                                                                    <% } %>
+                                                                    <% if (match.rounds[i].kills[j].killedTeamName === 'CT') { %>
+                                                                        <span class="mr-4 text-primary"><%= match.rounds[i].kills[j].killedName %></span>
+                                                                    <% } %>
+                                                                </div>
+                                                            </div>
+                                                        <% } %>
+                                                        <div class="row mt-2">
+                                                            <div class="col-3"></div>
+                                                            <div class="col-6">
+                                                                <% if (match.rounds[i].reason === '9') { %>
+                                                                    <span class="text-warning text-center">Terrorists win - Eliminated Counter-Terrorists</span>
+                                                                <% } %>
+                                                                <% if (match.rounds[i].reason === '8') { %>
+                                                                    <span class="text-primary text-center">Counter-Terrorists win - Eliminated Terrorists</span>
+                                                                <% } %>
+                                                                <% if (match.rounds[i].reason === '1') { %>
+                                                                    <span class="text-warning text-center">Terrorists win - Bomb Exploded</span>
+                                                                <% } %>
+                                                                <% if (match.rounds[i].reason === '7') { %>
+                                                                    <span class="text-primary text-center">Counter-Terrorists win - Bomb Defused</span>
+                                                                <% } %>
+                                                            </div>
+                                                            <div class="col-3"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <!-- Round Breakdown -->
+<!--                            <div class="card shadow mb-4">-->
+<!--                                <a href="#collapseRoundBreakdown" class="d-block card-header py-3" data-bs-toggle="collapse"-->
+<!--                                   role="button" aria-expanded="false" data-bs-target="#collapseRoundBreakdown">-->
+<!--                                    <h6 class="m-0 font-weight-bold text-primary">Round Breakdown</h6>-->
+<!--                                </a>-->
+<!--                                <div class="collapse" id="collapseRoundBreakdown">-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                        <div class="tab-pane fade" id="duels" role="tabpanel" aria-labelledby="duels-tab">
+                            <div class="card-body">
+                                <div class="row">
+                                    <% for(var i = 0; i < match.teams[0].players.length; i++){ %>
+
+                                        <div class="col-xl-6">
+                                            <div class="card shadow mb-4">
+                                                <!-- Card Header - Accordion -->
+                                                <a href="#player<%= match.teams[0].players[i].id %>Collapse"
+                                                   data-bs-toggle="collapse"
+                                                   class="d-block card-header py-3 collapsed text-uppercase"
+                                                   role="button" aria-expanded="false"
+                                                   data-bs-target="#player<%= match.teams[0].players[i].id %>Collapse">
+                                                    <h6 class="m-0 font-weight-bold text-warning">
+                                                        <%= match.teams[0].players[i].name %></h6>
+                                                </a>
+                                                <!-- Card Content - Collapse -->
+                                                <div class="collapse" id="player<%= match.teams[0].players[i].id %>Collapse">
+                                                    <div class="card-body">
+
+                                                        <% Object.keys(match.teams[0].players[i].playerDuels).forEach(function(key) { %>
+                                                            <h4 class="small font-weight-bold text-uppercase"><%= key %>
+                                                                <span class="float-right"><%= Math.round(((match.teams[0].players[i].playerDuels[key].totalWonDuels / match.teams[0].players[i].playerDuels[key].totalDuels) + Number.EPSILON) * 100) %>% - (<%= match.teams[0].players[i].playerDuels[key].totalWonDuels %> / <%= match.teams[0].players[i].playerDuels[key].totalDuels %>)</span>
+                                                            </h4>
+                                                            <div class="progress mb-4">
+                                                                <div class="progress-bar bg-success" role="progressbar"
+                                                                     style="width: <%= Math.round(((match.teams[0].players[i].playerDuels[key].totalWonDuels / match.teams[0].players[i].playerDuels[key].totalDuels) + Number.EPSILON) * 100) %>%"
+                                                                     aria-valuenow="<%= Math.round(((match.teams[0].players[i].playerDuels[key].totalWonDuels / match.teams[0].players[i].playerDuels[key].totalDuels) + Number.EPSILON) * 100) %>"
+                                                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+
+                                                        <% }); %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+
+                                    <% for(var i = 0; i < match.teams[1].players.length; i++){ %>
+
+                                        <div class="col-xl-6">
+                                            <div class="card shadow mb-4">
+                                                <!-- Card Header - Accordion -->
+                                                <a href="#player<%= match.teams[1].players[i].id %>Collapse"
+                                                   data-bs-toggle="collapse"
+                                                   class="d-block card-header py-3 collapsed text-uppercase"
+                                                   role="button" aria-expanded="false"
+                                                   data-bs-target="#player<%= match.teams[1].players[i].id %>Collapse">
+                                                    <h6 class="m-0 font-weight-bold text-primary">
+                                                        <%= match.teams[1].players[i].name %></h6>
+                                                </a>
+                                                <!-- Card Content - Collapse -->
+                                                <div class="collapse" id="player<%= match.teams[1].players[i].id %>Collapse">
+                                                    <div class="card-body">
+
+                                                        <% Object.keys(match.teams[1].players[i].playerDuels).forEach(function(key) { %>
+                                                            <h4 class="small font-weight-bold text-uppercase"><%= key %>
+                                                                <span class="float-right"><%= Math.round(((match.teams[1].players[i].playerDuels[key].totalWonDuels / match.teams[1].players[i].playerDuels[key].totalDuels) + Number.EPSILON) * 100) %>% - (<%= match.teams[1].players[i].playerDuels[key].totalWonDuels %> / <%= match.teams[1].players[i].playerDuels[key].totalDuels %>)</span>
+                                                            </h4>
+                                                            <div class="progress mb-4">
+                                                                <div class="progress-bar bg-success" role="progressbar"
+                                                                     style="width: <%= Math.round(((match.teams[1].players[i].playerDuels[key].totalWonDuels / match.teams[1].players[i].playerDuels[key].totalDuels) + Number.EPSILON) * 100) %>%"
+                                                                     aria-valuenow="<%= Math.round(((match.teams[1].players[i].playerDuels[key].totalWonDuels / match.teams[1].players[i].playerDuels[key].totalDuels) + Number.EPSILON) * 100) %>"
+                                                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+
+                                                        <% }); %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <!-- Duel Breakdown -->
+<!--                            <div class="card shadow mb-4">-->
+<!--                                <a href="#collapseDuelBreakdown" class="d-block card-header py-3" data-bs-toggle="collapse"-->
+<!--                                   role="button" aria-expanded="false" data-bs-target="#collapseDuelBreakdown">-->
+<!--                                    <h6 class="m-0 font-weight-bold text-primary">Duel Breakdown</h6>-->
+<!--                                </a>-->
+<!--                                <div class="collapse" id="collapseDuelBreakdown">-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                        <div class="tab-pane fade" id="guns" role="tabpanel" aria-labelledby="guns-tab">
+                            <!-- Gun Breakdown -->
+                            <!--            <div class="card shadow mb-4">-->
+                            <!--                <a href="#collapseGunBreakdown" class="d-block card-header py-3" data-bs-toggle="collapse"-->
+                            <!--                   role="button" aria-expanded="false" data-bs-target="#collapseGunBreakdown">-->
+                            <!--                    <h6 class="m-0 font-weight-bold text-primary">Top 5 Players per Gun</h6>-->
+                            <!--                </a>-->
+                            <!--                <div class="collapse" id="collapseGunBreakdown">-->
+                            <!--                </div>-->
+                            <!--            </div>-->
+                            <div class="card-body">
+                                <%- include('partials/gun.ejs') %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
+<script>
+    $(document).ready(function () {
+        var team1Table = $('#team<%=match.teams[0].id%>table').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            order: [[1, "desc"]]
+        });
+        let id = '#team <%=match.teams[1].id%>table';
+        var team2Table = $('#team<%=match.teams[1].id%>table').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            order: [[1, "desc"]]
+        });
+
+        $('.clutchToggle').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the column API object
+            var totalCol = team1Table.column(15);
+            var col1 = team1Table.column(16);
+            var col2 = team1Table.column(17);
+            var col3 = team1Table.column(18);
+            var col4 = team1Table.column(19);
+            var col5 = team1Table.column(20);
+
+            // Toggle the visibility
+            totalCol.visible(!totalCol.visible());
+            col1.visible(!col1.visible());
+            col2.visible(!col2.visible());
+            col3.visible(!col3.visible());
+            col4.visible(!col4.visible());
+            col5.visible(!col5.visible());
+
+            // Get the column API object
+            var totalCol = team2Table.column(15);
+            var col1 = team2Table.column(16);
+            var col2 = team2Table.column(17);
+            var col3 = team2Table.column(18);
+            var col4 = team2Table.column(19);
+            var col5 = team2Table.column(20);
+
+            // Toggle the visibility
+            totalCol.visible(!totalCol.visible());
+            col1.visible(!col1.visible());
+            col2.visible(!col2.visible());
+            col3.visible(!col3.visible());
+            col4.visible(!col4.visible());
+            col5.visible(!col5.visible());
+
+            // $('.clutch').toggle('collapse');
+        });
+        $('.multikillToggle').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the column API object
+            var totalCol = team1Table.column(9);
+            var col1 = team1Table.column(10);
+            var col2 = team1Table.column(11);
+            var col3 = team1Table.column(12);
+            var col4 = team1Table.column(13);
+            var col5 = team1Table.column(14);
+
+            // Toggle the visibility
+            totalCol.visible(!totalCol.visible());
+            col1.visible(!col1.visible());
+            col2.visible(!col2.visible());
+            col3.visible(!col3.visible());
+            col4.visible(!col4.visible());
+            col5.visible(!col5.visible());
+
+            // Get the column API object
+            var totalCol = team2Table.column(9);
+            var col1 = team2Table.column(10);
+            var col2 = team2Table.column(11);
+            var col3 = team2Table.column(12);
+            var col4 = team2Table.column(13);
+            var col5 = team2Table.column(14);
+
+            // Toggle the visibility
+            totalCol.visible(!totalCol.visible());
+            col1.visible(!col1.visible());
+            col2.visible(!col2.visible());
+            col3.visible(!col3.visible());
+            col4.visible(!col4.visible());
+            col5.visible(!col5.visible());
+
+            // $('.multikill').toggle('collapse');
+        });
+
+        // Get the column API object
+        let totalCol = team1Table.column(9);
+        var col1 = team1Table.column(10);
+        var col2 = team1Table.column(11);
+        var col3 = team1Table.column(12);
+        var col4 = team1Table.column(13);
+        var col5 = team1Table.column(14);
+
+        // Toggle the visibility
+        totalCol.visible(true);
+        col1.visible(false);
+        col2.visible(false);
+        col3.visible(false);
+        col4.visible(false);
+        col5.visible(false);
+
+        // Get the column API object
+        totalCol = team2Table.column(9);
+        var col1 = team2Table.column(10);
+        var col2 = team2Table.column(11);
+        var col3 = team2Table.column(12);
+        var col4 = team2Table.column(13);
+        var col5 = team2Table.column(14);
+
+        // Toggle the visibility
+        totalCol.visible(true);
+        col1.visible(false);
+        col2.visible(false);
+        col3.visible(false);
+        col4.visible(false);
+        col5.visible(false);
+
+        // Get the column API object
+        totalCol = team1Table.column(15);
+        var col1 = team1Table.column(16);
+        var col2 = team1Table.column(17);
+        var col3 = team1Table.column(18);
+        var col4 = team1Table.column(19);
+        var col5 = team1Table.column(20);
+
+        // Toggle the visibility
+        totalCol.visible(true);
+        col1.visible(false);
+        col2.visible(false);
+        col3.visible(false);
+        col4.visible(false);
+        col5.visible(false);
+
+        // Get the column API object
+        totalCol = team2Table.column(15);
+        var col1 = team2Table.column(16);
+        var col2 = team2Table.column(17);
+        var col3 = team2Table.column(18);
+        var col4 = team2Table.column(19);
+        var col5 = team2Table.column(20);
+
+        // Toggle the visibility
+        totalCol.visible(true);
+        col1.visible(false);
+        col2.visible(false);
+        col3.visible(false);
+        col4.visible(false);
+        col5.visible(false);
+
+    });
+</script>
+
