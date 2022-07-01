@@ -1,0 +1,82 @@
+.sidenav-content a {
+    display: block;
+    width: 100%;
+    padding-top: 2px;
+    color: #008C41;
+}
+
+.sidenav-content a:hover {
+    background-color: dimgrey;
+    text-decoration: none;
+    color: white;
+}
+.sidenav-content a:hover .fa {
+    color: white;
+}
+
+.mat-list-item {
+    height: 40px;
+    align-items: center;
+    text-align: left;
+}
+
+.sidenav-content {
+    height: 100%;
+    max-height: 1024px;
+    display: flex;
+    text-align: center;
+}
+
+.mat-drawer {
+    position: absolute;
+    background-color: #002850;
+}
+
+.mat-drawer-content {
+    position: relative;
+    z-index: 1;
+    min-height: 93.6vh !important;
+    overflow: auto;
+}
+
+.app-navbar {
+    color: #fff;
+    flex-wrap: nowrap;
+    height: 60px;
+}
+
+.spacer {
+    flex: 1;
+}
+
+#nav-title {
+    color: #008C41;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.menu-button {
+    background-color: dimgrey;
+    color: white;
+}
+
+.mat-toolbar {
+    background: #002850;
+}
+
+.mat-sidenav {
+    width: 250px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.fa {
+    color: #008C41;
+}
+

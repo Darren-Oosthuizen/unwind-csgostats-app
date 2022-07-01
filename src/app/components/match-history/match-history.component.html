@@ -1,0 +1,14 @@
+<div *ngFor="let match of matchHistory.reverse()" (click)="goToMatch(match)" [ngClass]="getResult(match)" class="row hoverRow text-white" style="height: 70px; line-height: 70px; text-align: center; cursor: pointer; margin-bottom: 3px; border-radius: 8px">
+    <div class="col-3">
+        {{match.date | date}}
+    </div>
+    <div class="col-2">
+        <img height="65px" src="https://static.csgostats.gg/images/maps/icons/{{match.map}}.png">
+    </div>
+    <div class="col-4">
+        <span class="fw-bold text-white">{{getEnemyTeamName(match)}}</span>
+    </div>
+    <div class="col-3">
+        <a href="#" class="btn btn-dark btn-circle btn-lg"><small class="text-white">{{getScoreLine(match)}}</small></a>
+    </div>
+</div>

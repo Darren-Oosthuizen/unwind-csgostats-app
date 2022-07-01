@@ -1,0 +1,16 @@
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-xl-12 col-md-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold">CSGO Players</h6>
+                </div>
+                <div class="card-body">
+                    <app-player-table [dataSource]="playerData" [pagination]="true"></app-player-table>
+                    <mat-progress-spinner class="text-spinner" *ngIf="isLoading" mode="indeterminate"
+                                          color="accent"></mat-progress-spinner>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

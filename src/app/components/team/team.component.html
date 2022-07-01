@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="row">
+        <mat-tab-group *ngIf="!isLoading" dynamicHeight animationDuration="250ms">
+            <mat-tab label="Players">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                    <h1 class="h3 mb-0 text-gray-800 fw-bold">Team Statistics: <b>{{team.teamName }}</b></h1>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">{{team.teamName }} Players</h6>
+                            </div>
+                            <div class="card-body">
+                                <app-player-table [dataSource]="team!.players!"
+                                                  [pagination]="false"></app-player-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Match History">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                    <h1 class="h3 mb-0 text-gray-800 fw-bold">Match History: <b>{{team.teamName }}</b></h1>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-xl-6 col-md-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">{{ team.teamName }} Match
+                                    History</h6>
+                            </div>
+                            <div class="card-body">
+                                <app-match-history [matchHistory]="team.matchHistory"
+                                                   [teamName]="team.teamName"></app-match-history>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Maps">
+                <div class="row mt-2">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+                            <h1 class="h3 mb-0 text-gray-800 fw-bold">Map Statistics: <b>{{ team.teamName }}</b>
+                            </h1>
+                        </div>
+                        <app-map-breakdown [maps]="team.maps"></app-map-breakdown>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+        <mat-progress-spinner class="text-spinner" *ngIf="isLoading" mode="indeterminate"
+                              color="accent"></mat-progress-spinner>
+    </div>
+</div>

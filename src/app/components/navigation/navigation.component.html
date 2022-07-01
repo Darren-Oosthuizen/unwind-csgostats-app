@@ -1,0 +1,46 @@
+<mat-toolbar color="primary" class="navbar app-navbar mat-elevation-z8">
+    <button (click)="toggleSideNav()" mat-icon-button class="menu-button">
+        <fa-icon [icon]="faBars"></fa-icon>
+    </button>
+    <a class="mat-button navbar-brand" [routerLink]="['/']">
+        <h1 id="nav-title">Unwind CSGO Stats</h1>
+    </a>
+    <p class="spacer"></p>
+
+</mat-toolbar>
+<mat-sidenav-container>
+    <mat-sidenav class="sidenav-content" #sidenav mode="side">
+        <p class="spacer"></p>
+        <a mat-list-item [routerLink]="['dashboard']" routerLinkActive="active">
+                        <span class="pl-3">
+                            <fa-icon class="fa pr-2" [fixedWidth]="true" [icon]="faTachometerAlt"></fa-icon>
+                            <span class="nav-item">Dashboard</span>
+                        </span>
+        </a>
+        <a mat-list-item [routerLink]="['players']" routerLinkActive="active">
+                        <span class="pl-3">
+                            <fa-icon class="fa pr-2" [fixedWidth]="true" [icon]="faUser"></fa-icon>
+                            <span class="nav-item">Players</span>
+                        </span>
+        </a>
+        <a mat-list-item [routerLink]="['teams']" routerLinkActive="active">
+                        <span class="pl-3">
+                            <fa-icon class="fa pr-2" [fixedWidth]="true" [icon]="faUsers"></fa-icon>
+                            <span class="nav-item">Teams</span>
+                        </span>
+        </a>
+        <a mat-list-item [routerLink]="['guns']" routerLinkActive="active">
+                        <span class="pl-3">
+                            <fa-icon class="fa pr-2" [fixedWidth]="true" [icon]="faUsers"></fa-icon>
+                            <span class="nav-item">Guns</span>
+                        </span>
+        </a>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div class="main-content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

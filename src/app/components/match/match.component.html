@@ -1,0 +1,29 @@
+<div *ngIf="!isLoading" class="container-fluid">
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-4">
+        <h1 class="h3 mb-0 text-gray-800 fw-bold">Map: <b>{{match.map}}</b></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <mat-tab-group dynamicHeight animationDuration="250ms">
+                <mat-tab label="Scoreboard">
+                    <app-scoreboard [dataSource]="match.teams[0].players" [team]="match.teams[0]" text="text-warning" [totalRounds]="match.rounds.length"></app-scoreboard>
+
+                    <app-round-breakdown-line [rounds]="match.rounds" [totalRounds]="match.rounds.length"></app-round-breakdown-line>
+
+                    <app-scoreboard [dataSource]="match.teams[1].players"  [team]="match.teams[1]" text="text-blue" [totalRounds]="match.rounds.length"></app-scoreboard>
+                </mat-tab>
+                <mat-tab label="Rounds">
+                    <app-round-breakdown [rounds]="match.rounds"></app-round-breakdown>
+                </mat-tab>
+                <mat-tab label="Duels">
+                    <app-duel-breakdown [team1Players]="match.teams[0].players" [team2Players]="match.teams[1].players"></app-duel-breakdown>
+                </mat-tab>
+                <mat-tab label="Guns">
+                    <app-gun-breakdown [guns]="guns"></app-gun-breakdown>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

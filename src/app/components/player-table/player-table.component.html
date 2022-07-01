@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <table mat-table matSort [dataSource]="_datasource" matSortActive="kills" matSortDirection="desc" matSortDisableClear="true" class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header="name" *matHeaderCellDef> Name </th>
+            <td class="w-25" mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="kills">
+            <th mat-header-cell mat-sort-header="kills" *matHeaderCellDef> Kills </th>
+            <td class="w-7" mat-cell *matCellDef="let element"> {{element.kills}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deaths">
+            <th mat-header-cell mat-sort-header="deaths" *matHeaderCellDef> Deaths </th>
+            <td class="w-7" mat-cell *matCellDef="let element"> {{element.deaths}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="assists">
+            <th mat-header-cell mat-sort-header="assists" *matHeaderCellDef> Assists </th>
+            <td class="w-7" mat-cell *matCellDef="let element"> {{element.assists}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="kd">
+            <th mat-header-cell mat-sort-header="kd" *matHeaderCellDef> K/D </th>
+            <td class="w-7" mat-cell *matCellDef="let element"> {{element.kd | number : '1.0-2'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="difference">
+            <th mat-header-cell *matHeaderCellDef> +/- </th>
+            <td [ngClass]="hasPositiveKillDifference(element) ? 'text-success' : 'text-danger'" mat-cell *matCellDef="let element"> {{killDifferenceDisplay(element)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="adr">
+            <th mat-header-cell mat-sort-header="adr" *matHeaderCellDef> ADR </th>
+            <td mat-cell *matCellDef="let element"> {{element.adr}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="headshotPercentage">
+            <th mat-header-cell mat-sort-header="headshotPercentage" *matHeaderCellDef> HS % </th>
+            <td mat-cell *matCellDef="let element"> {{element.headshotPercentage}} %</td>
+        </ng-container>
+
+        <ng-container matColumnDef="clutchPercentage">
+            <th mat-header-cell mat-sort-header="clutchPercentage" *matHeaderCellDef> Clutch % </th>
+            <td mat-cell *matCellDef="let element"> {{element.clutchPercentage}} %</td>
+        </ng-container>
+
+        <ng-container matColumnDef="entrySuccess">
+            <th mat-header-cell mat-sort-header="entrySuccess" *matHeaderCellDef> Entry % </th>
+            <td mat-cell *matCellDef="let element"> {{element.entrySuccess}} %</td>
+        </ng-container>
+
+        <ng-container matColumnDef="mvp">
+            <th mat-header-cell mat-sort-header="mvp" *matHeaderCellDef> MVP's </th>
+            <td mat-cell *matCellDef="let element"> {{element.mvp}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="win">
+            <th mat-header-cell *matHeaderCellDef> Win % </th>
+            <td mat-cell *matCellDef="let element"> {{(((element.totalWins / element.totalGames) + EPSILON) * 100) | number : '1.0-0'}} %</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="tableHeadings"></tr>
+        <tr mat-row
+            (click)="clickRow(row)"
+            *matRowDef="let row; columns: tableHeadings;"></tr>
+    </table>
+    <mat-paginator *ngIf="pagination" [pageSize]="10" aria-label="Select page of Players"></mat-paginator>
+</div>

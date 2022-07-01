@@ -1,0 +1,36 @@
+<div class="row mt-3">
+    <div *ngFor="let gun of guns" class="col-xl-4">
+        <div class="card shadow mb-4">
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h6 class="m-0 font-weight-bold text-primary text-uppercase">
+                                {{gun.name}}
+                            </h6>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="card-body">
+                        <ng-container *ngFor="let player of gun.players">
+                            <ng-container *ngIf="player.gunsKills > 0">
+                                <h4 class="small font-weight-bold text-uppercase">
+                                    {{player.name}}
+                                    <span class="float-right">
+                                {{player.gunsKills + ' Kill(s) - (' + ((((player.gunsHeadshots / player.gunsKills) + EPSILON) * 100) | number : '1.0-0') + '% HS)'}}
+                            </span>
+                                </h4>
+                                <div class="progress mb-4">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                         [ngStyle]="{'width.%' : (((player.gunsKills / gun.players[0].gunsKills) + EPSILON) * 100) | number : '1.0-0'}"
+                                         [attr.aria-valuenow]=" (((player.gunsKills / gun.players[0].gunsKills) + EPSILON) * 100)"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+</div>

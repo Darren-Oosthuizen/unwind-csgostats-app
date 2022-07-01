@@ -1,0 +1,71 @@
+<div class="card-body">
+    <div *ngFor="let round of rounds" class="row">
+        <div class="col-xl-12">
+            <div class="card shadow mb-4">
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h6 class="m-0 font-weight-bold text-primary text-uppercase">
+                                    Round {{round.roundNumber}}
+                                </h6>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                <span *ngIf="round.clutch" class="">{{round.clutch}}</span>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="card-body" style="background-color: #2d2e33">
+                            <div *ngFor="let kill of round.kills" class="row">
+                                <div class="col-4">
+                                    <span class="mr-1 text-white">({{getRoundTime(kill)}})</span>
+
+                                    <i *ngIf="kill.attackerBlind" class="fas fa-eye-slash text-gray-300"></i>
+                                    <span *ngIf="kill.killerTeamName === 'TERRORIST'"
+                                          class="mr-1 text-warning">{{kill.killerName}}</span>
+                                    <span *ngIf="kill.killerTeamName === 'CT'"
+                                          class="mr-1 text-blue">{{kill.killerName}}</span>
+                                    <span *ngIf="kill.assisted" class="mr-1">+</span>
+                                    <img *ngIf="kill.flashAssist" height="16px" width="16px"
+                                         src="https://www.vhv.rs/dpng/d/52-529068_csgo-flashbang-icon-hd-png-download.png">
+
+                                    <span *ngIf="kill.assisterTeamName === 'TERRORIST'"
+                                          class="text-warning">{{kill.assisterName}}</span>
+
+                                    <span *ngIf="kill.assisterTeamName === 'CT'"
+                                          class="text-blue">{{kill.assisterName}}</span>
+                                </div>
+                                <div class="col-3">
+                                    <img *ngIf="kill.noscope" height="16px" width="16px"
+                                         src="https://pbs.twimg.com/media/EWX31DsWkAAcRcN.png">
+                                    <i *ngIf="kill.throughSmoke" class="fas fa-cloud text-gray-300"></i>
+                                    <span class="text-white" *ngIf="kill.gun === 'planted_c4'">(Bomb Explosion)</span>
+                                    <span class="text-white" *ngIf="kill.gun !== 'planted_c4'">({{kill.gun}})</span>
+                                    <img *ngIf="kill.penetrated" height="16px" width="16px"
+                                         src="https://static.csgostats.gg/images/wallbang.png">
+                                    <img *ngIf="kill.headshot" height="16px" width="16px"
+                                         src="https://static.csgostats.gg/images/hs-small.png">
+                                </div>
+                                <div class="col-4">
+                                    <span *ngIf="kill.killedTeamName === 'TERRORIST'"
+                                          class="mr-4 text-warning">{{kill.killedName}}</span>
+                                    <span *ngIf="kill.killedTeamName === 'CT'"
+                                          class="mr-4 text-blue">{{kill.killedName}}</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-3"></div>
+                                <div class="col-6">
+                                    <span *ngIf="round.reason === '9'" class="text-warning text-center">Terrorists win - Eliminated Counter-Terrorists</span>
+                                    <span *ngIf="round.reason === '8'" class="text-primary text-center">Counter-Terrorists win - Eliminated Terrorists</span>
+                                    <span *ngIf="round.reason === '1'" class="text-warning text-center">Terrorists win - Bomb Exploded</span>
+                                    <span *ngIf="round.reason === '7'" class="text-primary text-center">Counter-Terrorists win - Bomb Defused</span>
+                                </div>
+                                <div class="col-3"></div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </div>
+</div>
