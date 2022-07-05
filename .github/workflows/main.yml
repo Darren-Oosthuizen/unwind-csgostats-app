@@ -15,10 +15,20 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  pull:
+    runs-on: flystudio-ubuntu-app
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+      
+    - name: Git pull
+      run: git clone git@github.com:Darren-Oosthuizen/unwind-csgostats-app.git
+       
   # This workflow contains a single job called "build"
   build:
+    needs: pull
     # The type of runner that the job will run on
-    runs-on: self-hosted
+    runs-on: flystudio-ubuntu-app
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -26,11 +36,17 @@ jobs:
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Stop Container
+        run: docker stop UnwindCSGOAppMem || true
+        
+      # Runs a single command using the runners shell
+      - name: Remove Container
+        run: docker rm UnwindCSGOAppMem || true
+        
+      # Runs a single command using the runners shell
+      - name: Remove Image
+        run: docker rmi darrenoosthuizen/unwindcsgoappmem:1.0.1 || true
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Rebuild Image
+        run: docker-compose up --force-recreate
