@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  UNWINDCSGOAPPMem:
+    container_name: UnwindCSGOAppMem
+    image: darrenoosthuizen/unwindcsgoappmem:1.0.1
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.UnwindCSGOAppMem.rule=Host(`unwindcsgo.flystudio.co.za`)"
+      - "traefik.http.routers.UnwindCSGOAppMem.entrypoints=websecure"
+      - "traefik.http.routers.UnwindCSGOAppMem.tls.certresolver=myresolver"
+    build:
+      context: ./
+      dockerfile: ./www.dockerfile
+    expose:
+      - "8080"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
