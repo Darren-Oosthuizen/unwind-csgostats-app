@@ -51,15 +51,18 @@ export class StatsService {
                 return;
             }
 
-
-            if (e.entity.steamId !== 'BOT') {
-                const player = new GamePlayer(e.entity.name, e.entity.steamId, e.entity.userId);
-                if (this.game.players.find(p => p.steamid === player.steamid) === undefined) {
-                    this.game.players.push(player);
-                } else {
-                    const updatePlayer = this.game.players.find(p => p.steamid === player.steamid);
-                    updatePlayer!.name = e.entity.name;
+            try {
+                if (e.entity.steamId !== 'BOT') {
+                    const player = new GamePlayer(e.entity.name, e.entity.steamId, e.entity.userId);
+                    if (this.game.players.find(p => p.steamid === player.steamid) === undefined) {
+                        this.game.players.push(player);
+                    } else {
+                        const updatePlayer = this.game.players.find(p => p.steamid === player.steamid);
+                        updatePlayer!.name = e.entity.name;
+                    }
                 }
+            } catch (ex: unknown) { // <-- note `e` has explicit `unknown` type
+                console.log(ex);
             }
         });
 
@@ -129,6 +132,9 @@ export class StatsService {
             });
             this.game.players = players;
 
+            if (roundNo === 22) {
+                console.log(JSON.stringify(this.game.players));
+            }
             const round = this.game.rounds.find(r => {
                 return r.roundNo === roundNo;
             });
@@ -251,7 +257,11 @@ export class StatsService {
             damage.damage = e.dmg_health;
             damage.attackerSteamId = attackerEntity ? attackerEntity.steamId : '';
             damage.victimSteamId = victimEntity ? victimEntity.steamId : '';
-            damage.friendly = attackerEntity ? attackerEntity.isFriendly(victimEntity!) : false;
+            if (victimEntity) {
+                damage.friendly = attackerEntity ? attackerEntity.isFriendly(victimEntity!) : false;
+            } else {
+                damage.friendly = false;
+            }
             damage.hitgroup = e.hitgroup;
             const round = this.game.rounds.find(r => r.roundNo === roundNo);
             if (round !== undefined) {

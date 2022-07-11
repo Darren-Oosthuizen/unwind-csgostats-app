@@ -18,7 +18,7 @@ export class MatchHistoryComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.matchHistory = this.matchHistory.reverse();
     }
 
     goToMatch(match: any) {
