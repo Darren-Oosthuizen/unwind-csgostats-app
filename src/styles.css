@@ -12254,7 +12254,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
 
 .round-text {
     position: relative;
-    left: -4px;
+    left: -6px;
     top: -2px;
 }
 

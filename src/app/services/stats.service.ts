@@ -72,7 +72,10 @@ export class StatsService {
 
         demo.gameEvents.on("round_announce_match_start", e => {
 
+
             const json = JSON.stringify(this.game);
+            console.log("MATCH START")
+            console.log(json);
             this.game.rounds = [];
             // Re-setting player kills/deaths/assists for match start
             this.game.players.forEach((player, index) => {
@@ -394,6 +397,11 @@ export class StatsService {
 
             // Send game object to backend for saving.
             const json = JSON.stringify(this.game);
+            console.log(json);
+            this.zone.run(() => {
+                this.router.navigate(['/submit-match/', {'match': JSON.stringify(this.game)}]);
+            });
+            this.isParsing = false
             // GameApi.createGame(game);
             demo.cancel();
         });
@@ -460,11 +468,12 @@ export class StatsService {
             })
 
             // Print scoreboard
-            console.log(this.game.toString());
-
+            console.log('here');
             // Send game object to backend for saving.
             const json = JSON.stringify(this.game);
             console.log(json);
+            console.log(this.game.toString());
+
             this.zone.run(() => {
                 this.router.navigate(['/submit-match/', {'match': JSON.stringify(this.game)}]);
             });
