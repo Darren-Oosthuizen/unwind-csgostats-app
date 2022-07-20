@@ -135,9 +135,6 @@ export class StatsService {
             });
             this.game.players = players;
 
-            if (roundNo === 22) {
-                console.log(JSON.stringify(this.game.players));
-            }
             const round = this.game.rounds.find(r => {
                 return r.roundNo === roundNo;
             });
@@ -146,6 +143,7 @@ export class StatsService {
                 round.reason = e.reason;
                 round.playerCount = e.player_count;
             }
+
         });
 
         // On Match Deaths find out who killed who and who assisted, increment counters.

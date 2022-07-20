@@ -1,7 +1,7 @@
 <div class="row">
     <div style="width: 2%; float: left"></div>
     <ng-container *ngFor="let round of rounds">
-        <ng-container *ngIf="round.roundNumber <= 15 && totalRounds < 30">
+        <ng-container *ngIf="round.roundNumber <= 15 && totalRounds <= 30">
             <div [ngStyle]="{'width.%' : 96/totalRounds}" style="float: left; margin-bottom: 3px">
                 <div [ngClass]="totalSurvived(getCTSurvived(round), 4)" class="player-bar ct"></div>
                 <div [ngClass]="totalSurvived(getCTSurvived(round), 3)" class="player-bar ct"></div>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </ng-container>
-        <ng-container *ngIf="round.roundNumber > 15 && round.roundNumber < 34 && totalRounds < 30">
+        <ng-container *ngIf="round.roundNumber > 15 && round.roundNumber < 34 && totalRounds <= 30">
             <div [ngStyle]="{'width.%' : 96/totalRounds}" style="float: left; margin-bottom: 3px">
                 <div [ngClass]="totalSurvived(getTSurvived(round), 4)" class="player-bar t"></div>
                 <div [ngClass]="totalSurvived(getTSurvived(round), 3)" class="player-bar t"></div>
@@ -124,7 +124,7 @@
     </div>
     <ng-container *ngFor="let round of rounds">
         <div [ngStyle]="{'width.%' : (96/totalRounds)}" style="float: left">
-            <ng-container *ngIf="round.roundNumber <= 15 && totalRounds < 30">
+            <ng-container *ngIf="round.roundNumber <= 15 && totalRounds <= 30">
                 <ng-container *ngIf="round.winner == '3'">
                     <div
                         style="width:100%;margin:auto; max-width:30px; position:relative; top:-51%; z-index:1; height:3px; border-radius:1px; text-align:center; background:#4A90E2"></div>
@@ -207,7 +207,7 @@
                 <div [ngClass]="totalSurvived(getCTSurvived(round), 4)" class="player-bar ct"></div>
             </div>
         </ng-container>
-        <ng-container *ngIf="round.roundNumber <= 15 && totalRounds < 30">
+        <ng-container *ngIf="round.roundNumber <= 15 && totalRounds <= 30">
             <div [ngStyle]="{'width.%' : 96/totalRounds}" style="float: left; margin-bottom: 3px">
                 <div class="round-image">
                     <img *ngIf="round.reason === '9'" src="assets/img/win-eliminations.png" height="13px">
@@ -221,7 +221,7 @@
                 <div [ngClass]="totalSurvived(getTSurvived(round), 4)" class="player-bar t"></div>
             </div>
         </ng-container>
-        <ng-container *ngIf="round.roundNumber > 15 && round.roundNumber < 34 && totalRounds < 30">
+        <ng-container *ngIf="round.roundNumber > 15 && round.roundNumber < 34 && totalRounds <= 30">
             <div [ngStyle]="{'width.%' : 96/totalRounds}" style="float: left; margin-bottom: 3px">
                 <div class="round-image">
                     <img *ngIf="round.reason === '7'" src="assets/img/win-defused.png" height="13px">
