@@ -26,6 +26,7 @@ export class PlayerTableComponent implements AfterViewInit {
 
     constructor(private route: Router) {
         this.tableHeadings = [
+            'position',
             'name',
             'kills',
             'deaths',
@@ -43,6 +44,7 @@ export class PlayerTableComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.tableHeadings = [
+            'position',
             'name',
             'kills',
             'deaths',
@@ -85,4 +87,12 @@ export class PlayerTableComponent implements AfterViewInit {
         }
     }
 
+    getPageNum() {
+        if (this.matPaginator) {
+            return (this.matPaginator.pageIndex * this.matPaginator.pageSize);
+        } else {
+            return 0;
+        }
+
+    }
 }
